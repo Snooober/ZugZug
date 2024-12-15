@@ -1,5 +1,5 @@
 local addonName = "ZugZug"
-local addonVersion = "0.0.1"
+local addonVersion = "1.0.0"
 local addonAuthor = "Snoober"
 local addonDesc = 'Only allows the player to chat "Zug, zug". For "Zug, zug Challenge".'
 
@@ -77,7 +77,7 @@ end
 
 -- Create a frame for the addon's information
 local infoFrame = CreateFrame("Frame", "InfoFrame", UIParent, "BasicFrameTemplateWithInset")
-infoFrame:SetSize(550, 300)
+infoFrame:SetSize(550, 350)
 infoFrame:SetPoint("CENTER")
 infoFrame:SetMovable(true)
 infoFrame:SetScript("OnMouseDown", function(self, button) self:StartMoving() end)
@@ -96,9 +96,11 @@ infoText:SetText('"Zug, zug Challenge" Rules:\n' ..
 					"            raid_warning, instance, guild, officer, whisper, channel chats, AFK msg, DND msg, and voice_text.\n" ..
 					'                    *can only use emotes that are action only, not voice.\n' ..
 					'                    Example: "/wave" is allowed. "/hello" is not allowed.\n' ..
-					"        3) Can use any form of capitalization.\n" ..
+					'        3) Must be exactly two "zug"\'s. Can omit space in-between "zug"\'s or add more\n' ..
+					'            spaces/punctuation.\n' ..
+					"        4) Can use any form of capitalization.\n" ..
 					"                    Example: \"zUg ZuG\" is allowed.\n" ..
-					"        4) Can use any form of punctuation along with \"Zug zug\" as long as the punctuation highlights the\n" ..
+					"        5) Can use any form of punctuation along with \"Zug zug\" as long as the punctuation highlights the\n" ..
 					"            use of \"Zug zug\". Punctuation may not be used for any other reason, such as to spell out words or\n" ..
 					"            1337 speak (no attempting to circumvent rules via punctuation).\n" ..
 					"                    Examples of allowed punctuation:\n" ..
