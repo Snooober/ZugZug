@@ -1,13 +1,8 @@
-local addonName = "ZugZug"
-local addonVersion = "1.0.0"
-local addonAuthor = "Snoober"
-local addonDesc = 'Only allows the player to chat "Zug, zug". For "Zug, zug Challenge".'
-
 local conversionChars = {".", "!", "?", "^", "~"}
 
 -- Function to check if the message contains exactly two "zug" 
 function containsTwoZug(message)
-    local pattern = "^[%s%p]*zug[%s%p]*zug[%s%p]*$" -- Matches "zug zug" with optional spaces, punctuation, and case-insensitive
+    local pattern = "^[%s%p]*zug[%s%p]*zug[%s%p]*$"
     return string.match(message:lower(), pattern) ~= nil
 end
 
@@ -45,20 +40,14 @@ local oldSendChatMessage = SendChatMessage
 local sentFlag = false
 
 function SendChatMessage(message, type, language, recipient)
-	-- Check if the player is an Orc
 	if isOrc() then
-		-- Check if the message is only conversion characters
 		if isOnlyConversionChars(message) then
 			message = "Zug, zug" .. message
 		end
-
-		-- Check if the message is only z characters
 		if isZChars(message) then
 			message = "Zug, zug"
 		end
 	end
-
-	-- Check and allow messages containing "zug zug"
 	if not sentFlag then
 		if isOrc() then
 			if containsTwoZug(message) then
@@ -77,7 +66,7 @@ end
 
 -- Create a frame for the addon's information
 local infoFrame = CreateFrame("Frame", "InfoFrame", UIParent, "BasicFrameTemplateWithInset")
-infoFrame:SetSize(550, 350)
+infoFrame:SetSize(550, 400)
 infoFrame:SetPoint("CENTER")
 infoFrame:SetMovable(true)
 infoFrame:SetScript("OnMouseDown", function(self, button) self:StartMoving() end)
@@ -105,15 +94,20 @@ infoText:SetText('"Zug, zug Challenge" Rules:\n' ..
 					"            1337 speak (no attempting to circumvent rules via punctuation).\n" ..
 					"                    Examples of allowed punctuation:\n" ..
 					'                    "Zug, zug", "Zug, zug!", "Zug, zug?", "Zug, zug...", "Zug, zug?!", "#zugzug"\n' ..
+					'        6) The addon will block the chat messages but not mail, emotes, or LFG messages. It is up to you to\n' ..
+					'            follow these rules for the proper Zug, zug Challenge.\n' ..
+					'        7) For third-party apps (i.e. Discord, Twitch chat), the challenge rules must be followed if conversing\n' ..
+					'            about activities related to your WoW character.\n' ..
 					"\n" ..
 					"\n" ..
-					'Chat Shortcuts (send the symbols in chat to auto-convert them to the "Zug, zug" message on the right):\n' ..
+					'Chat Shortcuts (send left character in chat to auto-convert to "Zug, zug" message on the right):\n' ..
+					'        z -> "Zug, zug" (any # of "z"\'s)\n' ..
 					'        . -> "Zug, zug."\n' ..
 					'        ! -> "Zug, zug!"\n' ..
 					'        ? -> "Zug, zug?"\n' ..
 					'        ^ -> "Zug, zug^"\n' ..
 					'        ~ -> "Zug, zug~"\n' ..
-					"    Any number of these symbols will work, even mixed-and-matched:\n" ..
+					"    Any number of the symbols will work, even mixed-and-matched:\n" ..
 					'        ... -> "Zug, zug..."\n' ..
 					'        ?!?! -> "Zug, zug?!?!"\n')
 
