@@ -97,7 +97,8 @@ infoText:SetText('"Zug, zug Challenge" Rules:\n' ..
 					'        6) The addon will block the chat messages but not mail, emotes, or LFG messages. It is up to you to\n' ..
 					'            follow these rules for the proper Zug, zug Challenge.\n' ..
 					'        7) For third-party apps (i.e. Discord, Twitch chat), the challenge rules must be followed if conversing\n' ..
-					'            about activities related to your WoW character.\n' ..
+					'            to another player about activities related to your WoW character if said player is interacting with\n' ..
+					'            you in the game. (If you are questing together, trading, etc.).\n' ..
 					"\n" ..
 					"\n" ..
 					'Chat Shortcuts (send left character in chat to auto-convert to "Zug, zug" message on the right):\n' ..
