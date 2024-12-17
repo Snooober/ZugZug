@@ -132,9 +132,9 @@ replyAdvertCk:SetPoint("BOTTOMLEFT", 10, 50)
 replyAdvertCk:SetScript("OnClick", function(self, button, down)
 	replyAdvert = self:GetChecked()
 	if self:GetChecked() then
-		DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: You will now auto-reply a link to this addon when someone whispers you "Zug, zug".')
+		DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: You will now auto-reply a link to this addon when an Orc player whispers you "Zug, zug".')
 	else
-		DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: You will no longer auto-reply a link to this addon when someone whispers you.')
+		DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: You will no longer auto-reply a link to this addon when a player whispers you.')
 	end
 end)
 
