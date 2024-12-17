@@ -95,9 +95,10 @@ infoText:SetText('"Zug, zug Challenge" Rules:\n' ..
 					"                    Example: \"zUg ZuG\" is allowed.\n" ..
 					"        5) Can use any form of punctuation along with \"Zug zug\" as long as the punctuation highlights the\n" ..
 					"            use of \"Zug zug\". Punctuation may not be used for any other reason, such as to spell out words or\n" ..
-					"            1337 speak (no attempting to circumvent rules via punctuation).\n" ..
+					"            1337 speak (no attempting to circumvent rules via punctuation). Emoticons allowed.\n" ..
 					"                    Examples of allowed punctuation:\n" ..
-					'                    "Zug, zug", "Zug, zug!", "Zug, zug?", "Zug, zug...", "Zug, zug?!", "#zugzug"\n' ..
+					'                        "Zug, zug", "Zug, zug!", "Zug, zug?", "Zug, zug...",\n' ..
+					'                        "Zug, zug?!", "#zugzug", "Zug, zug :)"\n' ..
 					'        6) The addon will block the chat messages but not mail, emotes, or LFG messages. It is up to you to\n' ..
 					'            follow these rules for the proper Zug, zug Challenge.\n' ..
 					'        7) For third-party apps (i.e. Discord, Twitch chat), the challenge rules must be followed if conversing\n' ..
@@ -140,8 +141,8 @@ end)
 -- Create text for checkbox
 local replyAdvertCkText = replyAdvertCk:CreateFontString(nil, "OVERLAY")
 replyAdvertCkText:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
-replyAdvertCkText:SetPoint("CENTER", 190, 1)
-replyAdvertCkText:SetText('Auto-reply link to this addon when player whispers "Zug, zug" to you.')
+replyAdvertCkText:SetPoint("CENTER", 200, 1)
+replyAdvertCkText:SetText('Auto-reply link to this addon when Orc player whispers "Zug, zug" to you.')
 
 -- Create slash commands
 SLASH_ZUGZUG1 = "/zugzug"
