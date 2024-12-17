@@ -1,7 +1,8 @@
 ## Interface: 110005
-## Version: 1.2.0
+## Version: 1.3.0
 ## Title: ZugZug
 ## Notes: Only allows the player to chat "Zug, zug". For the "Zug, zug Challenge".
 ## Author: Snoober
+## SavedVariables: replyAdvert
 
 ZugZug.lua

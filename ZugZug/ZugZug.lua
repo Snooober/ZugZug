@@ -1,3 +1,5 @@
+replyAdvert = nil
+local replyAdvertText = "Zug, zug: https://www.curseforge.com/wow/addons/zugzug"
 local conversionChars = {".", "!", "?", "^", "~"}
 
 -- Function to check if the message contains exactly two "zug" 
@@ -39,7 +41,8 @@ end
 local oldSendChatMessage = SendChatMessage
 local sentFlag = false
 
-function SendChatMessage(message, type, language, recipient)
+function SendChatMessage(message, type, language, recipient, pass)
+	pass = pass or false
 	if isOrc() then
 		if isOnlyConversionChars(message) then
 			message = "Zug, zug" .. message
@@ -50,7 +53,7 @@ function SendChatMessage(message, type, language, recipient)
 	end
 	if not sentFlag then
 		if isOrc() then
-			if containsTwoZug(message) then
+			if containsTwoZug(message) or pass then
 				oldSendChatMessage(message, type, language, recipient)
 			else
 				DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: Message blocked as it does not contain exactly two "zug". "/zz" or "/zugzug" for details')
@@ -66,7 +69,7 @@ end
 
 -- Create a frame for the addon's information
 local infoFrame = CreateFrame("Frame", "InfoFrame", UIParent, "BasicFrameTemplateWithInset")
-infoFrame:SetSize(550, 400)
+infoFrame:SetSize(550, 450)
 infoFrame:SetPoint("CENTER")
 infoFrame:SetMovable(true)
 infoFrame:SetScript("OnMouseDown", function(self, button) self:StartMoving() end)
@@ -75,10 +78,11 @@ infoFrame:Hide()
 
 -- Create a text frame to display information
 local infoText = infoFrame:CreateFontString(nil, "OVERLAY")
-infoText:SetPoint("TOPLEFT", 10, -10)
+infoText:SetPoint("TOPLEFT", 10, -30)
 infoText:SetPoint("BOTTOMRIGHT", -10, 10)
 infoText:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
 infoText:SetJustifyH("LEFT")
+infoText:SetJustifyV("TOP")
 infoText:SetText('"Zug, zug Challenge" Rules:\n' ..
 					"        1) Only for Orcs.\n" ..
 					"        2) Can only say \"Zug, zug\" in any in-game chat or mail. This includes: say, emote, yell, party, raid,\n" ..
@@ -115,11 +119,29 @@ infoText:SetText('"Zug, zug Challenge" Rules:\n' ..
 -- Create a close button for the frame
 local closeButton = CreateFrame("Button", nil, infoFrame, "UIPanelButtonTemplate")
 closeButton:SetText("Close")
-closeButton:SetPoint("BOTTOM")
-closeButton:SetSize(80, 20)
+closeButton:SetPoint("BOTTOM", 0, 8)
+closeButton:SetSize(100, 30)
 closeButton:SetScript("OnClick", function(self, button, down)
     infoFrame:Hide()
 end)
+
+-- Create a check button for reply advert
+local replyAdvertCk = CreateFrame("CheckButton", "ReplyAdvertCk", infoFrame, "ChatConfigCheckButtonTemplate")
+replyAdvertCk:SetPoint("BOTTOMLEFT", 10, 50)
+replyAdvertCk:SetScript("OnClick", function(self, button, down)
+	replyAdvert = self:GetChecked()
+	if self:GetChecked() then
+		DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: You will now auto-reply a link to this addon when someone whispers you "Zug, zug".')
+	else
+		DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: You will no longer auto-reply a link to this addon when someone whispers you.')
+	end
+end)
+
+-- Create text for checkbox
+local replyAdvertCkText = replyAdvertCk:CreateFontString(nil, "OVERLAY")
+replyAdvertCkText:SetFont("Fonts\\FRIZQT__.TTF", 10, "OUTLINE")
+replyAdvertCkText:SetPoint("CENTER", 190, 1)
+replyAdvertCkText:SetText('Auto-reply link to this addon when player whispers "Zug, zug" to you.')
 
 -- Create slash commands
 SLASH_ZUGZUG1 = "/zugzug"
@@ -130,17 +152,31 @@ end
 
 -- Check if the player is an Orc on login
 local function OnEvent(self, event, ...)
-    if event == "PLAYER_LOGIN" then
+	local arg1 = select("1", ...)
+	if event == "ADDON_LOADED" and arg1 == "ZugZug" then
+		if replyAdvert == nil then
+			replyAdvert = true
+		end
+		replyAdvertCk:SetChecked(replyAdvert)
+	elseif event == "PLAYER_LOGIN" then
         if isOrc() then
 			DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: "Zug, zug Challenge" active. "/zz" or "/zugzug" for details')
 		else
             DEFAULT_CHAT_FRAME:AddMessage('ZugZug addon: You are not playing an Orc and therefore cannot participate in the "Zug, zug Challenge". Messages will not be filtered for this character. "/zz" or "/zugzug" for details')
         end
-    end
+	elseif event == "CHAT_MSG_WHISPER" then
+		local msg = arg1
+		local playerName = select("2", ...)
+		if containsTwoZug(msg) and isOrc() and replyAdvert then
+			SendChatMessage(replyAdvertText, "WHISPER", nil, playerName, true)
+		end
+	end
 end
 
 -- Register the event listener
+infoFrame:RegisterEvent("ADDON_LOADED")
 infoFrame:RegisterEvent("PLAYER_LOGIN")
+infoFrame:RegisterEvent("CHAT_MSG_WHISPER")
 infoFrame:SetScript("OnEvent", OnEvent)
 
 -- Hook the SendChatMessage function
